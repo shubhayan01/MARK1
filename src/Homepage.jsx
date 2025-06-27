@@ -243,6 +243,27 @@ const Homepage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Custom CSS for shooting stars */}
+      <style jsx>{`
+        @keyframes shootingStar {
+          0% {
+            opacity: 0;
+            transform: translateX(-100px) translateY(0px) scale(0.5);
+          }
+          10% {
+            opacity: 1;
+            transform: translateX(-80px) translateY(10px) scale(1);
+          }
+          90% {
+            opacity: 1;
+            transform: translateX(calc(100vw + 80px)) translateY(calc(50vh + 100px)) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(calc(100vw + 100px)) translateY(calc(50vh + 120px)) scale(0.5);
+          }
+        }
+      `}</style>
       {/* Galaxy Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-950/20 via-transparent to-purple-950/20"></div>
@@ -263,9 +284,9 @@ const Homepage = () => {
               key={i}
               className={`absolute rounded-full ${
                 animationType < 0.3 ? 'animate-pulse' :
-                animationType < 0.6 ? 'animate-pulse' :
-                animationType < 0.8 ? 'animate-pulse' :
-                'animate-pulse'
+                animationType < 0.6 ? 'animate-ping' :
+                animationType < 0.8 ? 'animate-bounce' :
+                ''
               }`}
               style={{
                 left: `${Math.random() * 100}%`,
@@ -286,25 +307,40 @@ const Homepage = () => {
         })}
       </div>
 
+      {/* Shooting Stars */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-white rounded-full opacity-0"
+            style={{
+              left: `${-10 + Math.random() * 20}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `shootingStar ${3 + Math.random() * 4}s linear infinite`,
+              animationDelay: `${Math.random() * 8}s`,
+              boxShadow: '0 0 6px rgba(255,255,255,0.8), 0 0 12px rgba(135,206,235,0.6)'
+            }}
+          />
+        ))}
+      </div>
+
       {/* Moving Constellations */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="absolute opacity-20 animate-spin"
+            className="absolute opacity-20"
             style={{
               left: `${Math.random() * 80 + 10}%`,
               top: `${Math.random() * 80 + 10}%`,
-              animationDelay: `${i * 3}s`,
-              animationDuration: `${25 + i * 5}s`
             }}
           >
             <svg width="60" height="60" viewBox="0 0 60 60">
-              <circle cx="10" cy="10" r="1.5" fill="white" opacity="0.6"/>
-              <circle cx="30" cy="15" r="1" fill="white" opacity="0.5"/>
-              <circle cx="50" cy="20" r="1.8" fill="white" opacity="0.7"/>
-              <circle cx="15" cy="40" r="0.8" fill="white" opacity="0.4"/>
-              <circle cx="45" cy="45" r="1.2" fill="white" opacity="0.6"/>
+              <circle cx="10" cy="10" r="1.5" fill="white" opacity="0.6" className="animate-pulse"/>
+              <circle cx="30" cy="15" r="1" fill="white" opacity="0.5" className="animate-ping"/>
+              <circle cx="50" cy="20" r="1.8" fill="white" opacity="0.7" className="animate-pulse"/>
+              <circle cx="15" cy="40" r="0.8" fill="white" opacity="0.4" className="animate-ping"/>
+              <circle cx="45" cy="45" r="1.2" fill="white" opacity="0.6" className="animate-pulse"/>
               <line x1="10" y1="10" x2="30" y2="15" stroke="white" strokeWidth="0.3" opacity="0.3"/>
               <line x1="30" y1="15" x2="50" y2="20" stroke="white" strokeWidth="0.3" opacity="0.3"/>
               <line x1="15" y1="40" x2="45" y2="45" stroke="white" strokeWidth="0.3" opacity="0.3"/>
@@ -334,13 +370,13 @@ const Homepage = () => {
         </header>
 
         {/* Greeting Section */}
-        <div className="text-center mt-8 md:mt-12 mb-6 md:mb-8 px-4 opacity-0 animate-pulse">
+        <div className="text-center mt-8 md:mt-12 mb-6 md:mb-8 px-4">
           <div className="relative mx-auto mb-6 w-12 h-12 flex items-center justify-center">
             <div className="absolute w-full h-full">
               <Circle className="w-full h-full text-white/15 animate-spin" strokeWidth={1} />
             </div>
             <div className="absolute w-8 h-8">
-              <Circle className="w-full h-full text-white/10 animate-spin" strokeWidth={1} />
+              <Circle className="w-full h-full text-white/10 animate-spin" strokeWidth={1} style={{animationDirection: 'reverse'}} />
             </div>
             <div className="w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
           </div>
@@ -390,7 +426,7 @@ const Homepage = () => {
           {/* Chat Messages */}
           <div className="flex-1 overflow-y-auto mb-6 space-y-4 min-h-[200px] max-h-96">
             {messages.length === 0 ? (
-              <div className="text-center py-12 md:py-16 opacity-0 animate-pulse">
+              <div className="text-center py-12 md:py-16">
                 <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-sm">
                   <Bot className="w-7 h-7 md:w-9 md:h-9 text-white/50" />
                 </div>
@@ -400,7 +436,7 @@ const Homepage = () => {
               messages.map((msg) => (
                 <div
                   key={msg.timestamp}
-                  className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'} opacity-0 animate-pulse`}
+                  className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`flex items-start gap-3 max-w-[85%] md:max-w-[75%] ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
                     <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 backdrop-blur-sm ${msg.type === 'ai'
@@ -422,7 +458,7 @@ const Homepage = () => {
           </div>
 
           {/* Suggestions with slider */}
-          <div className="mb-6 opacity-0 animate-pulse">
+          <div className="mb-6">
             <div className="flex items-center gap-3">
               <button
                 className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95 border border-white/10 backdrop-blur-sm"
@@ -455,7 +491,7 @@ const Homepage = () => {
           </div>
 
           {/* Chat Input */}
-          <div className="flex gap-4 mb-6 opacity-0 animate-pulse">
+          <div className="flex gap-4 mb-6">
             <input
               type="text"
               value={chatInput}
@@ -473,7 +509,7 @@ const Homepage = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 opacity-0 animate-pulse">
+          <div className="flex flex-wrap justify-center gap-4">
             <button
               onClick={handleTasksClick}
               className="flex items-center gap-3 px-5 py-3 bg-white/5 border border-white/15 rounded-xl hover:bg-white/10 hover:border-white/25 transition-all duration-300 text-sm md:text-base text-white/60 hover:text-white/90 font-light tracking-wide backdrop-blur-sm hover:scale-105 active:scale-95"
