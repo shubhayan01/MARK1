@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Homepage from './Homepage'
 import LoginPage from './Loginpage'
-import EmployeeTaskPage from './EmployeeTaskpage'
+import EmployeeTaskPage from './EmployeeTaskPage'
 
 // Create context for user authentication and tasks
 export const AuthContext = createContext(null);
