@@ -27,3 +27,4 @@ export default defineConfig({
   },
   base: '/', // Ensure correct base path for Vercel
 }
+)
