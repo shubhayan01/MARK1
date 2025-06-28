@@ -62,6 +62,24 @@ const Homepage = () => {
     return `I understand you want to: "${input}". I'm processing this request and will help you complete this task step by step.`;
   };
 
+  const [starField, setStarField] = useState([]);
+
+  // Generate static star field once on component mount
+  useEffect(() => {
+    const stars = [];
+    for (let i = 0; i < 300; i++) {
+      stars.push({
+        id: i,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        size: 0.5 + Math.random() * 2.5,
+        brightness: Math.random(),
+        twinkle: Math.random() > 0.7
+      });
+    }
+    setStarField(stars);
+  }, []);
+
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour < 12) setGreeting('Good Morning');
@@ -76,7 +94,7 @@ const Homepage = () => {
     setMessages(prev => [...prev, userMessage]);
     
     try {
-      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/631fc343-c26e-4af0-a18a-192c7eb5991c', {
+      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/517ddbcc-12e2-47f3-8217-03c40abe0112', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: chatInput, timestamp: new Date().toISOString() })
@@ -193,7 +211,7 @@ const Homepage = () => {
     setMessages(prev => [...prev, userMessage]);
     
     try {
-      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/389eafbd-f1e5-4179-8641-bf2941acde0c', {
+      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/631fc343-c26e-4af0-a18a-192c7eb5991c', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'get_tasks', timestamp: new Date().toISOString() })
@@ -231,11 +249,10 @@ const Homepage = () => {
   };
 
   const slideSuggestions = (direction) => {
-    const maxIndex = Math.max(0, suggestions.length - 4);
     if (direction === 'left') {
-      setCurrentSuggestionIndex(Math.max(0, currentSuggestionIndex - 1));
+      setCurrentSuggestionIndex(Math.max(0, currentSuggestionIndex - 4));
     } else {
-      setCurrentSuggestionIndex(Math.min(maxIndex, currentSuggestionIndex + 1));
+      setCurrentSuggestionIndex(Math.min(suggestions.length - 4, currentSuggestionIndex + 4));
     }
   };
 
@@ -243,24 +260,32 @@ const Homepage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Custom CSS for shooting stars */}
+      {/* Custom CSS for shooting stars with tails */}
       <style jsx>{`
-        @keyframes shootingStar {
+        @keyframes diagonalShoot {
           0% {
             opacity: 0;
-            transform: translateX(-100px) translateY(0px) scale(0.5);
+            transform: rotate(35deg) translateX(-50px) translateY(-30px);
           }
-          10% {
+          8% {
             opacity: 1;
-            transform: translateX(-80px) translateY(10px) scale(1);
           }
-          90% {
-            opacity: 1;
-            transform: translateX(calc(100vw + 80px)) translateY(calc(50vh + 100px)) scale(1);
+          92% {
+            opacity: 0.8;
+            transform: rotate(35deg) translateX(calc(80vw)) translateY(calc(80vh));
           }
           100% {
             opacity: 0;
-            transform: translateX(calc(100vw + 100px)) translateY(calc(50vh + 120px)) scale(0.5);
+            transform: rotate(35deg) translateX(calc(80vw)) translateY(calc(80vh));
+          }
+        }
+        
+        @keyframes gentleTwinkle {
+          0%, 100% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 1;
           }
         }
       `}</style>
@@ -272,56 +297,58 @@ const Homepage = () => {
         <div className="absolute top-1/6 left-1/6 w-64 h-64 bg-blue-900/10 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Enhanced Starfield */}
+      {/* Static Starfield - generated once */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(300)].map((_, i) => {
-          const size = 0.5 + Math.random() * 2.5;
-          const brightness = Math.random();
-          const animationType = Math.random();
+        {starField.map((star) => (
+          <div
+            key={star.id}
+            className="absolute rounded-full"
+            style={{
+              left: `${star.left}%`,
+              top: `${star.top}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              background: star.brightness > 0.7 ? 
+                `radial-gradient(circle, rgba(255,255,255,${0.8 + star.brightness * 0.2}) 0%, rgba(135,206,235,${0.4 + star.brightness * 0.3}) 50%, transparent 100%)` :
+                star.brightness > 0.4 ?
+                `radial-gradient(circle, rgba(255,255,255,${0.6 + star.brightness * 0.4}) 0%, rgba(173,216,230,${0.3 + star.brightness * 0.2}) 70%, transparent 100%)` :
+                `rgba(255,255,255,${0.3 + star.brightness * 0.5})`,
+              boxShadow: star.brightness > 0.8 ? `0 0 ${star.size * 2}px rgba(255,255,255,${star.brightness * 0.6})` : 'none',
+              animation: star.twinkle ? `gentleTwinkle ${3 + (star.id % 4)}s ease-in-out infinite` : 'none',
+              animationDelay: `${(star.id % 10) * 0.5}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Diagonal Shooting Stars */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(3)].map((_, i) => {
+          const startX = 10 + (i * 10); // Starting positions: 30%, 50%, 70%
+          const startY = 5 + (i * 15); // Starting heights: 5%, 20%, 35%
+          const delay = 20 + (i * 15); // Longer delays: 8s, 20s, 32s
           
           return (
-            <div
-              key={i}
-              className={`absolute rounded-full ${
-                animationType < 0.3 ? 'animate-pulse' :
-                animationType < 0.6 ? 'animate-ping' :
-                animationType < 0.8 ? 'animate-bounce' :
-                ''
-              }`}
+            <div 
+              key={`shooting-${i}`}
+              className="absolute opacity-0"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                background: brightness > 0.7 ? 
-                  `radial-gradient(circle, rgba(255,255,255,${0.8 + brightness * 0.2}) 0%, rgba(135,206,235,${0.4 + brightness * 0.3}) 50%, transparent 100%)` :
-                  brightness > 0.4 ?
-                  `radial-gradient(circle, rgba(255,255,255,${0.6 + brightness * 0.4}) 0%, rgba(173,216,230,${0.3 + brightness * 0.2}) 70%, transparent 100%)` :
-                  `rgba(255,255,255,${0.3 + brightness * 0.5})`,
-                boxShadow: brightness > 0.8 ? `0 0 ${size * 2}px rgba(255,255,255,${brightness * 0.6})` : 'none',
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${2 + Math.random() * 4}s`
+                left: `${startX}%`,
+                top: `${startY}%`,
+                width: '160px',
+                height: '1px',
+                background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0.8) 60%, rgba(255,255,255,1) 100%)',
+                borderRadius: '1px',
+                boxShadow: '0 0 10px rgba(255,255,255,0.7)',
+                filter: 'blur(1px)',
+                transform: 'rotate(10deg)',
+                transformOrigin: 'left center',
+                animation: `diagonalShoot ${4 + (i % 2)}s linear infinite`,
+                animationDelay: `${delay}s`
               }}
             />
           );
         })}
-      </div>
-
-      {/* Shooting Stars */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-white rounded-full opacity-0"
-            style={{
-              left: `${-10 + Math.random() * 20}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `shootingStar ${3 + Math.random() * 4}s linear infinite`,
-              animationDelay: `${Math.random() * 8}s`,
-              boxShadow: '0 0 6px rgba(255,255,255,0.8), 0 0 12px rgba(135,206,235,0.6)'
-            }}
-          />
-        ))}
       </div>
 
       {/* Moving Constellations */}
@@ -468,7 +495,7 @@ const Homepage = () => {
                 <ChevronLeft className="w-4 h-4 text-white/50" />
               </button>
               <div className="flex-1 overflow-hidden">
-                <div className="flex gap-3 transition-transform duration-300">
+                <div className="flex gap-3 transition-transform duration-500">
                   {visibleSuggestions.map((suggestion, index) => (
                     <button
                       key={currentSuggestionIndex + index}
