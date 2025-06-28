@@ -19,7 +19,7 @@ const EmployeeTaskPage = () => {
   const fetchTasks = async (employeeName) => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5678/webhook-test/70de41be-6955-42b5-9cda-eca71606a9a6', {
+      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/70de41be-6955-42b5-9cda-eca71606a9a6', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const EmployeeTaskPage = () => {
 
     // Send data to n8n webhook
     try {
-      const response = await fetch('http://localhost:5678/webhook-test/05c1e19a-d24a-4dc0-8002-a0a234fe4456', {
+      const response = await fetch('https://raia-ip2j.onrender.com/webhook-test/05c1e19a-d24a-4dc0-8002-a0a234fe4456', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
