@@ -71,7 +71,6 @@ const LoginPage = () => {
     if (window.google) {
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleCallback,
       });
     }
   };
@@ -104,49 +103,6 @@ const LoginPage = () => {
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleGoogleCallback = async (response) => {
-    try {
-      setIsGoogleLoading(false);
-      
-      // Decode the JWT token to get user info
-      const userInfo = JSON.parse(atob(response.credential.split('.')[1]));
-      
-      // Send the credential to your Zapier webhook
-      const zapierResponse = await fetch('https://hooks.zapier.com/hooks/catch/23493393/uop35m9/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: userInfo.email,
-          name: userInfo.name,
-          picture: userInfo.picture,
-          google_credential: response.credential,
-          timestamp: new Date().toISOString(),
-          action: 'google_login'
-        })
-      });
-
-      if (zapierResponse.ok) {
-        setUser({
-          email: userInfo.email,
-          role: 'client',
-          name: userInfo.name,
-          picture: userInfo.picture,
-          googleConnected: true,
-          googleCredential: response.credential
-        });
-        navigate('/');
-      } else {
-        setError('Failed to process Google authentication');
-      }
-    } catch (err) {
-      console.error('Google authentication error:', err);
-      setError('Google authentication failed');
-      setIsGoogleLoading(false);
     }
   };
 
@@ -188,7 +144,7 @@ const LoginPage = () => {
             const userProfile = await profileResponse.json();
 
             // Send data to n8n webhook
-            const n8nResponse = await fetch('http://localhost:5678/webhook-test/4107c769-ade1-4767-9153-13b2406de892', {
+            const n8nResponse = await fetch('https://raia-ip2j.onrender.com/webhook-test/4107c769-ade1-4767-9153-13b2406de892', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -462,17 +418,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-
-
-
-
-
-     
-
 
       <style jsx>{`
         @keyframes fade-in {
@@ -541,6 +486,8 @@ const LoginPage = () => {
           background: radial-gradient(circle, var(--tw-gradient-stops));
         }
       `}</style>
-
+    </div>
+  );
+};
 
 export default LoginPage;
