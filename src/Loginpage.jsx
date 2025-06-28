@@ -282,7 +282,7 @@ const LoginPage = () => {
           </div>
           
           <h1 className="text-5xl font-extralight mb-8 tracking-[0.3em] text-white/95">
-            MARK 1
+            R.A.I.A
           </h1>
 
           <h3 className="text-2xl font-extralight mb-8 tracking-[0.3em] text-white/95">
@@ -358,16 +358,7 @@ const LoginPage = () => {
             )}
           </button>
 
-          <div className="text-center">
-            <p className="text-white/30 text-sm">
-              Demo Accounts:
-            </p>
-            <p className="text-white/50 text-xs mt-1">
-              Employee: emp@rg / 1234
-              <br />
-              Admin: admin@eg / 6969
-            </p>
-          </div>
+         
         </form>
 
         {/* Divider */}
