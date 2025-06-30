@@ -58,21 +58,123 @@ const Homepage = () => {
       return "I'll prepare to send your data. Which specific data or report would you like to send?";
     }
 
-     if (inputLower.includes('hi')) {
-      return "Hello how are you doing?";
-    }
+    // Greeting patterns
+  if (inputLower.match(/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)$/)) {
+    const greetings = [
+      "Hello! How are you doing today?",
+      "Hi there! Great to see you! How can I assist you?",
+      "Hey! I'm RAIA, ready to help you automate your tasks. What's on your mind?",
+      "Hello! Hope you're having a wonderful day. What can I help you with?"
+    ];
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  }
 
-     if (inputLower.includes('who aare you')) {
-      return "I am R.A.I.A your personal assistance, created by NOVUS. I am here to help you by automating your daaily hectic task. Just say it and get it done.";
-    }
+  // How are you responses
+  if (inputLower.match(/(how are you|how's it going|how do you do)/)) {
+    const responses = [
+      "I'm doing great, thank you for asking! My circuits are running smoothly and I'm ready to help you tackle any task. How are you doing?",
+      "Fantastic! I'm energized and ready to automate whatever you need. How's your day going?",
+      "I'm operating at full capacity and feeling helpful! What brings you here today?"
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
 
-     if (inputLower.includes('what do you mean by raia')) {
-      return "R.A.I.A means Robust Artifical Intelligence Automation, a cool accronym given by my creator. (Tony Stark's fan)";
-    }
+  // Identity and introduction
+  if (inputLower.match(/(who are you|what are you|tell me about yourself|introduce yourself)/)) {
+    return "I'm R.A.I.A - your personal AI assistant created by NOVUS! I specialize in automating your daily hectic tasks to make your life easier. Think of me as your digital companion who's always ready to help. Just tell me what you need, and I'll get it done! 🤖";
+  }
 
-     if (inputLower.includes('problem')) {
-      return "If you wanat to send a review please email at novus.reachus@gmail.com";
-    }
+  // RAIA meaning
+  if (inputLower.match(/(what.*raia|raia.*mean|what.*r\.a\.i\.a)/)) {
+    return "R.A.I.A stands for 'Robust Artificial Intelligence Automation' - pretty cool acronym, right? My creator was definitely inspired by Tony Stark! 😎 I'm designed to be your reliable AI companion for handling complex tasks with ease.";
+  }
+
+  // Capabilities and features
+  if (inputLower.match(/(what can you do|your capabilities|help me|features|abilities)/)) {
+    return "I'm built to automate your daily tasks and make your life simpler! I can help with scheduling, reminders, information lookup, problem-solving, and much more. Just describe what you need help with, and I'll break it down into manageable steps. What specific task would you like me to assist with?";
+  }
+
+  // Thanks responses
+  if (inputLower.match(/(thank you|thanks|appreciate|grateful)/)) {
+    const responses = [
+      "You're absolutely welcome! I'm always here to help. 😊",
+      "My pleasure! That's what I'm here for. Anything else you need?",
+      "Happy to help! Feel free to ask me anything else.",
+      "No problem at all! I enjoy making your tasks easier."
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
+
+  // Goodbye responses
+  if (inputLower.match(/(bye|goodbye|see you|farewell|take care)/)) {
+    const farewells = [
+      "Goodbye! It was great helping you today. Come back anytime you need assistance! 👋",
+      "See you later! Remember, I'm always here when you need to automate those tasks!",
+      "Take care! Don't hesitate to reach out whenever you need help with anything.",
+      "Farewell! Looking forward to helping you again soon!"
+    ];
+    return farewells[Math.floor(Math.random() * farewells.length)];
+  }
+
+  // Creator/NOVUS related
+  if (inputLower.match(/(novus|creator|who made you|who created you)/)) {
+    return "I was created by the amazing team at NOVUS! They're the brilliant minds behind my design and capabilities. They wanted to create an AI that could truly make people's lives easier by handling their daily tasks. Pretty awesome, right?";
+  }
+
+  // Problems, issues, feedback
+  if (inputLower.match(/(problem|issue|bug|error|complaint|feedback|review)/)) {
+    return "I appreciate you wanting to share feedback! Your input helps make me better. Please feel free to email your thoughts, suggestions, or any issues to: novus.reachus@gmail.com - the NOVUS team will get back to you promptly! 📧";
+  }
+
+  // Help with specific tasks
+  if (inputLower.match(/(schedule|remind|appointment|meeting|task|todo|plan)/)) {
+    return "Great! I love helping with organization and planning. Could you tell me more details about what you'd like to schedule or plan? I can help break it down into steps and make sure nothing gets missed!";
+  }
+
+  // Weather inquiries
+  if (inputLower.match(/(weather|temperature|forecast|rain|sunny)/)) {
+    return "I'd love to help you with weather information! While I can't check current weather directly, I can guide you to reliable weather sources or help you plan activities based on weather considerations. What specifically do you need weather info for?";
+  }
+
+  // Time-related queries
+  if (inputLower.match(/(time|date|day|today|tomorrow|yesterday)/)) {
+    return "Time-related questions are my specialty! I can help you with scheduling, time management, and planning. What specific time or date information do you need help with?";
+  }
+
+  // Confusion or unclear input
+  if (inputLower.match(/(confused|don't understand|unclear|what|huh|\?{2,})/)) {
+    return "No worries! I'm here to help clarify things. Could you tell me a bit more about what you're looking for? I'm designed to handle all sorts of tasks, so feel free to describe what you need in your own words.";
+  }
+
+  // Positive expressions
+  if (inputLower.match(/(awesome|amazing|great|excellent|perfect|wonderful)/)) {
+    return "I'm so glad you think so! That kind of enthusiasm makes my day. Is there anything specific I can help you accomplish right now?";
+  }
+
+  // Expressions of frustration or difficulty
+  if (inputLower.match(/(difficult|hard|struggling|frustrated|stuck|help)/)) {
+    return "I totally understand - we all face challenging tasks sometimes! That's exactly why I'm here. Take a deep breath, and let's tackle this together step by step. What's the specific challenge you're dealing with?";
+  }
+
+  // Default intelligent response with better context
+  if (input.length > 0) {
+    const contextualResponses = [
+      `I see you mentioned: "${input}". That sounds interesting! I'm processing how I can best help you with this. Could you give me a bit more context so I can provide the most helpful assistance?`,
+      
+      `Thanks for sharing that with me! I understand you're looking for help with: "${input}". I'm designed to break down complex tasks into manageable steps. What's your main goal here?`,
+      
+      `I hear you on: "${input}". Let me think about the best way to approach this. While I'm processing your request, feel free to add any additional details that might help me assist you better!`,
+      
+      `Interesting! You've brought up: "${input}". I'm your automation specialist, so I'm already thinking about how to streamline this for you. What's the end result you're hoping to achieve?`
+    ];
+    
+    const randomResponse = contextualResponses[Math.floor(Math.random() * contextualResponses.length)];
+    return randomResponse + " If you have any feedback or run into issues, you can always reach out to our team at novus.reachus@gmail.com! 🚀";
+  }
+
+  // Empty input fallback
+  return "I'm here and ready to help! Feel free to tell me what you need assistance with. Whether it's scheduling, planning, or automating any daily task - I'm your AI companion for getting things done! ✨";
+};
     // Default intelligent response
     return `I understand you want to: "${input}". I'm processing this request and will help you complete this task step by step. if there are any issues or thoughts you want to share please share it on our email novus.reachus@gmail `;
   };
