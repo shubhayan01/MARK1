@@ -127,11 +127,45 @@ const EmployeeTaskPage = () => {
     });
   };
 
+  // Fixed logout function that actually works
   const handleLogout = () => {
-    setShowNameForm(true);
-    setUser({ name: '', email: 'john.doe@company.com' });
-    setTasks([]);
-    setNameInput('');
+    if (window.confirm && window.confirm('Are you sure you want to logout?')) {
+      // Clear any stored user data
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userData');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('employeeName');
+      localStorage.removeItem('employeeTasks');
+      sessionStorage.clear();
+      
+      // Reset all application state
+      setShowNameForm(true);
+      setUser({ name: '', email: 'john.doe@company.com' });
+      setTasks([]);
+      setNameInput('');
+      setLoading(false);
+      setStatusUpdateForm({
+        taskId: null,
+        taskName: '',
+        newStatus: '',
+        updatedBy: '',
+        showForm: false
+      });
+      
+      // Redirect options (choose one):
+      
+      // Option 1: Redirect to login page (replace '/login' with your actual login route)
+      window.location.href = '/login';
+      
+      // Option 2: Reload the page to reset everything
+      // window.location.reload();
+      
+      // Option 3: Redirect to homepage
+      // window.location.href = '/';
+      
+      // Option 4: If using React Router, you would use:
+      // navigate('/login');
+    }
   };
 
   if (showNameForm) {
