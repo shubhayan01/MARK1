@@ -175,9 +175,7 @@ const Homepage = () => {
   // Empty input fallback
   return "I'm here and ready to help! Feel free to tell me what you need assistance with. Whether it's scheduling, planning, or automating any daily task - I'm your AI companion for getting things done! ✨";
 };
-    // Default intelligent response
-    return `I understand you want to: "${input}". I'm processing this request and will help you complete this task step by step. if there are any issues or thoughts you want to share please share it on our email novus.reachus@gmail `;
-  };
+   
 
   const [starField, setStarField] = useState([]);
 
