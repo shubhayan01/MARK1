@@ -58,19 +58,19 @@ const Homepage = () => {
       return "I'll prepare to send your data. Which specific data or report would you like to send?";
     }
 
-     if (inputLower.includes('hi') && inputLower.includes('hello')) {
+     if (inputLower.includes('hi')) {
       return "Hello how are you doing?";
     }
 
-     if (inputLower.includes('who aare you') && inputLower.includes('tell me aabout yourself')) {
+     if (inputLower.includes('who aare you')) {
       return "I am R.A.I.A your personal assistance, created by NOVUS. I am here to help you by automating your daaily hectic task. Just say it and get it done.";
     }
 
-     if (inputLower.includes('what do you mean by raia') && inputLower.includes('R.A.I.A meaning')) {
+     if (inputLower.includes('what do you mean by raia')) {
       return "R.A.I.A means Robust Artifical Intelligence Automation, a cool accronym given by my creator. (Tony Stark's fan)";
     }
 
-     if (inputLower.includes('problem') && inputLower.includes('review')) {
+     if (inputLower.includes('problem')) {
       return "If you wanat to send a review please email at novus.reachus@gmail.com";
     }
     // Default intelligent response
