@@ -57,9 +57,24 @@ const Homepage = () => {
     if (inputLower.includes('data') && inputLower.includes('send')) {
       return "I'll prepare to send your data. Which specific data or report would you like to send?";
     }
-    
+
+     if (inputLower.includes('hi') && inputLower.includes('hello')) {
+      return "Hello how are you doing?";
+    }
+
+     if (inputLower.includes('who aare you') && inputLower.includes('tell me aabout yourself')) {
+      return "I am R.A.I.A your personal assistance, created by NOVUS. I am here to help you by automating your daaily hectic task. Just say it and get it done.";
+    }
+
+     if (inputLower.includes('what do you mean by raia') && inputLower.includes('R.A.I.A meaning')) {
+      return "R.A.I.A means Robust Artifical Intelligence Automation, a cool accronym given by my creator. (Tony Stark's fan)";
+    }
+
+     if (inputLower.includes('problem') && inputLower.includes('review')) {
+      return "If you wanat to send a review please email at novus.reachus@gmail.com";
+    }
     // Default intelligent response
-    return `I understand you want to: "${input}". I'm processing this request and will help you complete this task step by step.`;
+    return `I understand you want to: "${input}". I'm processing this request and will help you complete this task step by step. if there are any issues or thoughts you want to share please share it on our email novus.reachus@gmail `;
   };
 
   const [starField, setStarField] = useState([]);
